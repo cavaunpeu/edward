@@ -123,7 +123,7 @@ class MonteCarlo(Inference):
     #### Notes
 
     We run the increment of `t` separately from other ops. Whether the
-    others op run with the `t` before incrementing or after incrementing
+    other ops run with the `t` before incrementing or after incrementing
     depends on which is run faster in the TensorFlow graph. Running it
     separately forces a consistent behavior.
     """
