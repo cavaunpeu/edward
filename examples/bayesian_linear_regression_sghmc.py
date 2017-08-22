@@ -51,7 +51,7 @@ qw = Empirical(params=tf.Variable(tf.random_normal([T, D])))
 qb = Empirical(params=tf.Variable(tf.random_normal([T, 1])))
 
 inference = ed.SGHMC({w: qw, b: qb}, data={X: X_train, y: y_train})
-inference.run(step_size=1e-3)
+inference.run(step_size=1e-3, logdir='log')
 
 
 # CRITICISM

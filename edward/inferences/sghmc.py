@@ -78,7 +78,7 @@ class SGHMC(MonteCarlo):
                                   list(six.itervalues(old_sample)))
 
     # v_sample is so named b/c it represents a velocity rather than momentum.
-    sample = {}
+    self.sample = {}
     v_sample = {}
     for z, grad_log_p in zip(six.iterkeys(old_sample), grad_log_joint):
       qz = self.latent_vars[z]
@@ -86,7 +86,7 @@ class SGHMC(MonteCarlo):
       normal = Normal(loc=tf.zeros(event_shape),
                       scale=(tf.sqrt(learning_rate * friction) *
                              tf.ones(event_shape)))
-      sample[z] = old_sample[z] + old_v_sample[z]
+      self.sample[z] = old_sample[z] + old_v_sample[z]
       v_sample[z] = ((1. - 0.5 * friction) * old_v_sample[z] +
                      learning_rate * tf.convert_to_tensor(grad_log_p) +
                      normal.sample())
@@ -95,7 +95,7 @@ class SGHMC(MonteCarlo):
     assign_ops = []
     for z, qz in six.iteritems(self.latent_vars):
       variable = qz.get_variables()[0]
-      assign_ops.append(tf.scatter_update(variable, self.t, sample[z]))
+      assign_ops.append(tf.scatter_update(variable, self.t, self.sample[z]))
       assign_ops.append(tf.assign(self.v[z], v_sample[z]).op)
 
     # Increment n_accept.
