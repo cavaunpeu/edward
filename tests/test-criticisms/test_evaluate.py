@@ -72,6 +72,12 @@ class test_evaluate_class(tf.test.TestCase):
           0.6,
           ed.evaluate('categorical_accuracy', {x: x_data}, n_samples=1))
 
+      x = Multinomial(total_count=5.0, probs=tf.constant([0.48, 0.51, 0.01]))
+      x_data = tf.constant([2, 3, 0], dtype=x.dtype.as_numpy_dtype)
+      self.assertAllClose(
+          1.0,
+          ed.evaluate('categorical_accuracy', {x: x_data}, n_samples=1))
+
   def test_data(self):
     with self.test_session():
       x_ph = tf.placeholder(tf.float32, [])

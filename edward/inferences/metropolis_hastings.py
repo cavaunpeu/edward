@@ -148,6 +148,9 @@ class MetropolisHastings(MonteCarlo):
       variable = qz.get_variables()[0]
       assign_ops.append(tf.scatter_update(variable, self.t, sample[z]))
 
+      if self.logging:
+        tf.summary.scalar(z.name + "/foo", sample[z], collections=[self._summary_key])
+
     # Increment n_accept (if accepted).
     assign_ops.append(self.n_accept.assign_add(tf.where(accept, 1, 0)))
     return tf.group(*assign_ops)

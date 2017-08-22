@@ -84,7 +84,7 @@ _allowed_symbols = [
 ]
 
 # Remove all extra symbols that don't have a docstring or are not explicitly
-# referenced in the whitelist.
+# referenced in the safelist.
 remove_undocumented(__name__, _allowed_symbols, [
     criticisms, inferences, models, util
 ])

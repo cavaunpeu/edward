@@ -26,7 +26,7 @@ qp = Empirical(params=tf.Variable(tf.zeros([1000]) + 0.5))
 proposal_p = Beta(3.0, 9.0)
 
 inference = ed.MetropolisHastings({p: qp}, {p: proposal_p}, data={x: x_data})
-inference.run()
+inference.run(logdir='log')
 
 # CRITICISM
 # exact posterior has mean 0.25 and std 0.12

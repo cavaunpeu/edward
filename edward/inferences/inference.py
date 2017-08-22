@@ -46,7 +46,7 @@ class Inference(object):
   qmu_scale = tf.nn.softplus(tf.Variable(tf.random_normal([])))
   qmu = Normal(loc=qmu_loc, scale=qmu_scale)
 
-  inference = ed.Inference({mu: qmu}, data={x: tf.zeros(50)})
+  inference = ed.Inference(x, data={x: tf.zeros(50)})
   ```
   """
   def __init__(self, latent_vars=None, data=None):

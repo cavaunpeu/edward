@@ -118,6 +118,10 @@ def evaluate(metrics, data, n_samples=500, output_key=None):
     if isinstance(output_key, binary_discrete + categorical_discrete):
       # Average over realizations of their probabilities, then predict
       # via argmax over probabilities.
+      # TODO: another if-switch that says: if output_key.total_count > 1,
+      # we need to run not just `output_key.probs`, but `Multinomial(output_key.probs, total_count=output_key.total_count)`
+      # finally, average columnwise. *Crucially*, we're no longer taking an argmax anywhere (line 32)!
+      import pdb; pdb.set_trace()
       probs = [sess.run(output_key.probs, feed_dict) for _ in range(n_samples)]
       probs = tf.add_n(probs) / tf.cast(n_samples, probs[0].dtype)
       if isinstance(output_key, binary_discrete):
