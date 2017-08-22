@@ -105,6 +105,9 @@ class MonteCarlo(Inference):
     if self.logging:
       tf.summary.scalar("n_accept", self.n_accept,
                         collections=[self._summary_key])
+      for z, qz in six.iteritems(self.latent_vars):
+        tf.summary.scalar(z.name + "bar", self.sample[z], collections=[self._summary_key])
+
       self.summarize = tf.summary.merge_all(key=self._summary_key)
 
   def update(self, feed_dict=None):
