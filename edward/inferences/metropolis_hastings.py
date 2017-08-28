@@ -139,14 +139,17 @@ class MetropolisHastings(MonteCarlo):
       # `tf.cond` returns tf.Tensor if output is a list of size 1.
       sample_values = [sample_values]
 
-    self.sample = {z: sample_value for z, sample_value in
+    sample = {z: sample_value for z, sample_value in
               zip(six.iterkeys(new_sample), sample_values)}
 
     # Update Empirical random variables.
     assign_ops = []
     for z, qz in six.iteritems(self.latent_vars):
       variable = qz.get_variables()[0]
-      assign_ops.append(tf.scatter_update(variable, self.t, self.sample[z]))
+      assign_ops.append(tf.scatter_update(variable, self.t, sample[z]))
+
+    # Co-locate update data to be logged.
+    self.update_results['sample'] = sample
 
     # Increment n_accept (if accepted).
     assign_ops.append(self.n_accept.assign_add(tf.where(accept, 1, 0)))

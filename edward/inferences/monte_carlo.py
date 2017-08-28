@@ -98,6 +98,7 @@ class MonteCarlo(Inference):
 
     self.n_accept = tf.Variable(0, trainable=False, name="n_accept")
     self.n_accept_over_t = self.n_accept / self.t
+    self.update_results = {}
     self.train = self.build_update()
 
     self.reset.append(tf.variables_initializer([self.n_accept]))
@@ -105,8 +106,10 @@ class MonteCarlo(Inference):
     if self.logging:
       tf.summary.scalar("n_accept", self.n_accept,
                         collections=[self._summary_key])
-      for z, qz in six.iteritems(self.latent_vars):
-        tf.summary.scalar(z.name + "bar", self.sample[z], collections=[self._summary_key])
+
+      sample = self.update_results.get('sample')
+      for z, qz in six.iteritems(sample):
+        tf.summary.scalar(z.name + "flops", sample[z], collections=[self._summary_key])
 
       self.summarize = tf.summary.merge_all(key=self._summary_key)
 
