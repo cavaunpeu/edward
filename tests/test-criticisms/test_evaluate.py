@@ -36,6 +36,11 @@ class test_evaluate_class(tf.test.TestCase):
           0.6,
           ed.evaluate('binary_accuracy', {x: x_data}, n_samples=1))
       x = Bernoulli(probs=tf.constant([0.51, 0.49, 0.49]))
+      # in evaluate.py, `y_pred` is simply the argmax over these probabilities
+      # as such, we're evaluating the binary_accuracy between:
+        # - y_pred: [1, 0, 0]
+        # - y_true: [1, 0, 1]
+      # implicitly, this is basically saying: we're predicting `1` for every trial; now, compute accuracy with actual data
       x_data = tf.constant([1, 0, 1])
       self.assertAllClose(
           2.0 / 3,

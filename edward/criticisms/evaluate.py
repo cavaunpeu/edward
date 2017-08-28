@@ -121,7 +121,6 @@ def evaluate(metrics, data, n_samples=500, output_key=None):
       # TODO: another if-switch that says: if output_key.total_count > 1,
       # we need to run not just `output_key.probs`, but `Multinomial(output_key.probs, total_count=output_key.total_count)`
       # finally, average columnwise. *Crucially*, we're no longer taking an argmax anywhere (line 32)!
-      import pdb; pdb.set_trace()
       # TODO: test the following line where `.probs` gives a *random variable*, not a fixed vector!
       probs = [sess.run(output_key.probs, feed_dict) for _ in range(n_samples)]
       probs = tf.add_n(probs) / tf.cast(n_samples, probs[0].dtype)
@@ -207,6 +206,7 @@ def binary_accuracy(y_true, y_pred):
     y_pred: tf.Tensor.
       Tensor of predictions, with same shape as `y_true`.
   """
+  import pdb; pdb.set_trace()
   y_true = tf.cast(y_true, tf.float32)
   y_pred = tf.cast(y_pred, tf.float32)
   return tf.reduce_mean(tf.cast(tf.equal(y_true, y_pred), tf.float32))
